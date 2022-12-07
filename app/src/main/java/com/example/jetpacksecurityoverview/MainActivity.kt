@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.jetpacksecurityoverview.databinding.ActivityMainBinding
+import com.squareup.moshi.Moshi
+import java.util.Random
 
 class MainActivity : AppCompatActivity() {
   private lateinit var binding: ActivityMainBinding
@@ -173,6 +175,26 @@ class MainActivity : AppCompatActivity() {
   private fun closeKeyboard() {
     val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+  }
+
+  // Queue implementation
+  private fun generateUser(): User {
+    val candidateChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    val sb = StringBuilder()
+    val random = Random()
+    for (i in 0 until 8) {
+      sb.append(candidateChars[random.nextInt(candidateChars.length)])
+    }
+    val id = random.nextInt(candidateChars.length)
+    val name = sb.toString()
+    return User(id, name)
+  }
+  private fun getRetryQueue(): FileQueue<User> {
+    val fileQueueFactory = FileQueueFactory(baseContext, Moshi.Builder().build())
+    return fileQueueFactory.create(
+      "user_retry_queue",
+      User::class.java
+    )
   }
 }
 

@@ -2,6 +2,7 @@
   <string name="app_name">JetpackSecurityOverview</string>
   <string name="shared_prefs_label">Enter a password that is going to be saved in Encrypted shared prefs:</string>
   <string name="save">Save</string>
+  <string name="add_to_queue">Add to Queue</string>
   <string name="files_label">Enter a password that is going to be saved in Encrypted file:</string>
   <string name="hidden_password">*****************</string>
   <string name="show_password">Show password</string>

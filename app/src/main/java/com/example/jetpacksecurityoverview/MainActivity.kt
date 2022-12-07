@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.jetpacksecurityoverview.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
   private lateinit var binding: ActivityMainBinding
   
-  private val masterKey: MasterKey by lazy { generateMasterKey() }
+  private val masterKey: String by lazy { MasterKeys.getOrCreate(AES256_GCM_SPEC) }
   private val encryptedPrefs: EncryptedPrefsInterface by lazy { EncryptedPrefs(masterKey) }
   private val encryptedFile: EncryptedFileSystem by lazy { EncryptedFileSystem(masterKey) }
   
@@ -47,10 +48,6 @@ class MainActivity : AppCompatActivity() {
       deleteSharedPrefsPassword.setOnClickListener { deleteSharedPrefsPassword() }
       deleteFilePassword.setOnClickListener { deleteFilePassword() }
     }
-  }
-  
-  private fun generateMasterKey(): MasterKey {
-    return MasterKey.Builder(this).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
   }
   
   private fun savePasswordToEncryptedPrefs() {

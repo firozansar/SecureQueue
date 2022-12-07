@@ -2,14 +2,13 @@ package com.example.jetpacksecurityoverview
 
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 
-class EncryptedPrefs(masterKey: MasterKey) : EncryptedPrefsInterface {
+class EncryptedPrefs(masterKey: String) : EncryptedPrefsInterface {
   
   private val encryptedSharedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
-    App.instance,
     SHARED_PREFS_FILENAME,
     masterKey,
+    App.instance,
     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
   )

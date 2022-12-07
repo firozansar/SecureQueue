@@ -2,17 +2,16 @@ package com.example.jetpacksecurityoverview
 
 import android.util.Log
 import androidx.security.crypto.EncryptedFile
-import androidx.security.crypto.MasterKey
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 
-class EncryptedFileSystem(masterKey: MasterKey) : EncryptedFileSystemInterface {
+class EncryptedFileSystem(masterKey: String) : EncryptedFileSystemInterface {
   
   private val encryptedFile = EncryptedFile.Builder(
-    App.instance,
     File(App.instance.filesDir, FILE_NAME),
+    App.instance,
     masterKey,
     EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
   ).build()

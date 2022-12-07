@@ -1,0 +1,24 @@
+# IntelliJ files
+.idea/*
+
+# Don't ignore code styles
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+# Generated files
+bin/
+gen/
+*.iml
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+.DS_Store
+

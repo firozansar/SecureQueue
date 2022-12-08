@@ -10,6 +10,7 @@ import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.securequeue.databinding.ActivityMainBinding
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.Random
 
 class MainActivity : AppCompatActivity() {
@@ -121,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         while (iterator.hasNext()) {
             val user = iterator.next()
             sb.append(user.toString())
+            sb.append("\n")
             Log.d(TAG, "User in the queue: $user")
         }
         binding.fileQueue.text = sb.toString()
@@ -222,7 +224,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getRetryQueue(): FileQueue<User> {
-        val fileQueueFactory = FileQueueFactory(baseContext, Moshi.Builder().build())
+        val fileQueueFactory = FileQueueFactory(
+            baseContext,
+            Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build())
         return fileQueueFactory.create(
             SECURE_QUEUE_FILE,
             User::class.java
@@ -230,6 +234,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-const val TAG = "Firoz"
+const val TAG = "MainActivity"
 const val EMPTY_STRING = ""
 const val SECURE_QUEUE_FILE = "secure_queue_file"

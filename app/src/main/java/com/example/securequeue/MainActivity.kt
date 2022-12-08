@@ -1,4 +1,4 @@
-package com.example.jetpacksecurityoverview
+package com.example.securequeue
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
-import com.example.jetpacksecurityoverview.databinding.ActivityMainBinding
+import com.example.securequeue.databinding.ActivityMainBinding
 import com.squareup.moshi.Moshi
 import java.util.Random
 

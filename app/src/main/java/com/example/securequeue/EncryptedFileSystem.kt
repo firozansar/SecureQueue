@@ -1,4 +1,4 @@
-package com.example.jetpacksecurityoverview
+package com.example.securequeue
 
 import android.util.Log
 import androidx.security.crypto.EncryptedFile

@@ -1,4 +1,4 @@
-package com.example.jetpacksecurityoverview
+package com.example.securequeue
 
 import android.content.Context
 import com.squareup.moshi.JsonAdapter

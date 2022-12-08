@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">JetpackSecurityOverview</string>
+  <string name="app_name">Secure Queue</string>
   <string name="shared_prefs_label">Enter a password that is going to be saved in Encrypted shared prefs:</string>
   <string name="save">Save</string>
   <string name="add_to_queue">Add to Queue</string>

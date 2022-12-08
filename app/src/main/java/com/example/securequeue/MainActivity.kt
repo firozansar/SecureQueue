@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             filesSubmit.setOnClickListener { savePasswordToEncryptedFile() }
             showSharedPrefsPassword.setOnClickListener { toggleSharedPrefsPasswordVisibility() }
             showFilesPassword.setOnClickListener { toggleFilesPasswordVisibility() }
-            addToQueue.setOnClickListener { addToSecureQueue()}
+            addToQueue.setOnClickListener { addToSecureQueue() }
             showQueue.setOnClickListener { showStoredQueue() }
             clearQueue.setOnClickListener { getRetryQueue().clear() }
             deleteSharedPrefsPassword.setOnClickListener { deleteSharedPrefsPassword() }
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showStoredQueue() {
-        val iterator =  getRetryQueue().iterator()
+        val iterator = getRetryQueue().iterator()
         val sb = StringBuilder()
         while (iterator.hasNext()) {
             val user = iterator.next()
@@ -215,7 +215,7 @@ class MainActivity : AppCompatActivity() {
         val candidateChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val sb = StringBuilder()
         val random = Random()
-        for (i in 0 until 8) {
+        for (i in 0 until 4) {
             sb.append(candidateChars[random.nextInt(candidateChars.length)])
         }
         val id = random.nextInt(candidateChars.length)
@@ -226,7 +226,8 @@ class MainActivity : AppCompatActivity() {
     private fun getRetryQueue(): FileQueue<User> {
         val fileQueueFactory = FileQueueFactory(
             baseContext,
-            Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build())
+            Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+        )
         return fileQueueFactory.create(
             SECURE_QUEUE_FILE,
             User::class.java

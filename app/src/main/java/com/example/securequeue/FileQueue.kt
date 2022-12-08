@@ -6,12 +6,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.tape2.ObjectQueue
 import com.squareup.tape2.ObjectQueue.Converter
 import com.squareup.tape2.QueueFile
-import java.io.*
+import java.io.File
+import java.io.OutputStream
 import javax.inject.Inject
 import okio.Buffer
 import okio.buffer
 import okio.sink
-
 
 /**
  * A queue that stores a list of models on disk.
@@ -42,7 +42,7 @@ interface FileQueue<T> {
 
 class FileQueueFactory @Inject constructor(private val context: Context, private val moshi: Moshi) {
     fun <T> create(fileName: String, type: Class<T>): FileQueue<T> {
-        val queueFile = QueueFile.Builder(File(context.cacheDir, fileName)).build()
+        val queueFile = QueueFile.Builder(File(context.filesDir, fileName)).build()
         val converter = MoshiConverter(moshi, type)
         return TapeFileQueue<T>(ObjectQueue.create<T>(queueFile, converter))
     }

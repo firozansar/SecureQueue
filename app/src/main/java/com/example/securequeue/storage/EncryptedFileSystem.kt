@@ -1,7 +1,9 @@
-package com.example.securequeue
+package com.example.securequeue.storage
 
 import android.util.Log
 import androidx.security.crypto.EncryptedFile
+import com.example.securequeue.App
+import com.example.securequeue.EMPTY_STRING
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -40,6 +42,18 @@ class EncryptedFileSystem(masterKey: String) : EncryptedFileSystemInterface {
     override fun deletePassword() {
         val file = File(App.instance.filesDir, FILE_NAME)
         if (file.exists()) file.delete()
+    }
+
+    override fun saveUser(user: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getUser(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteUser() {
+        TODO("Not yet implemented")
     }
 
 

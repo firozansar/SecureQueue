@@ -1,7 +1,9 @@
-package com.example.securequeue
+package com.example.securequeue.storage
 
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
+import com.example.securequeue.App
+import com.example.securequeue.EMPTY_STRING
 
 class EncryptedPrefs(masterKey: String) : EncryptedPrefsInterface {
 

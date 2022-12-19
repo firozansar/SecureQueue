@@ -1,8 +1,11 @@
 package com.example.securequeue
 
 import android.content.Context
+import com.example.securequeue.storage.RunnableConverter
+import com.example.securequeue.storage.toJsonAdapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.tape2.ObjectQueue
 import com.squareup.tape2.ObjectQueue.Converter
 import com.squareup.tape2.QueueFile
@@ -40,10 +43,10 @@ interface FileQueue<T> {
     fun iterator(): MutableIterator<T>
 }
 
-class FileQueueFactory @Inject constructor(private val context: Context, private val moshi: Moshi) {
+class FileQueueFactory @Inject constructor(private val context: Context) {
     fun <T> create(fileName: String, type: Class<T>): FileQueue<T> {
         val queueFile = QueueFile.Builder(File(context.filesDir, fileName)).build()
-        val converter = MoshiConverter(moshi, type)
+        val converter = MoshiConverter(type)
         return TapeFileQueue<T>(ObjectQueue.create<T>(queueFile, converter))
     }
 }
@@ -67,11 +70,15 @@ private class TapeFileQueue<T>(private val objectQueue: ObjectQueue<T>) : FileQu
 }
 
 /** Converter which uses Moshi to serialize instances of class T to disk.  */
-private class MoshiConverter<T>(moshi: Moshi, type: Class<T>) : Converter<T> {
+private class MoshiConverter<T>(type: Class<T>) : Converter<T> {
     private val jsonAdapter: JsonAdapter<T>
+    private var converter: RunnableConverter = RunnableConverter()
 
     init {
-        jsonAdapter = moshi.adapter(type)
+        jsonAdapter = Moshi.Builder()
+            .add(Runnable::class.java, converter.toJsonAdapter())
+            .addLast(KotlinJsonAdapterFactory())
+            .build().adapter(type)
     }
 
     override fun from(bytes: ByteArray): T? {

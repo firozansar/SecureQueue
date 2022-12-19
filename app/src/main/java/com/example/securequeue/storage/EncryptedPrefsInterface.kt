@@ -1,4 +1,4 @@
-package com.example.securequeue
+package com.example.securequeue.storage
 
 interface EncryptedPrefsInterface {
 

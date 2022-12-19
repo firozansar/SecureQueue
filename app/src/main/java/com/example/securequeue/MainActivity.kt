@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.securequeue.databinding.ActivityMainBinding
+import com.example.securequeue.model.User
+import com.example.securequeue.storage.EncryptedFileSystem
+import com.example.securequeue.storage.EncryptedPrefs
+import com.example.securequeue.storage.EncryptedPrefsInterface
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.Random

@@ -228,10 +228,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getRetryQueue(): FileQueue<User> {
-        val fileQueueFactory = FileQueueFactory(
-            baseContext,
-            Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-        )
+        val fileQueueFactory = FileQueueFactory(baseContext)
         return fileQueueFactory.create(
             SECURE_QUEUE_FILE,
             User::class.java

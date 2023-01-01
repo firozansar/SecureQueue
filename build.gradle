@@ -17,15 +17,3 @@ buildscript {
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
-
-//buildscript {
-//     repositories {
-//         google()
-//         mavenCentral()
-//     }
-//     dependencies {
-//         classpath(libs.plugin.androidTools)
-//         classpath(libs.plugin.kotlinGradle)
-//         classpath(libs.plugin.hiltAndroidGradle)
-//     }
-// }

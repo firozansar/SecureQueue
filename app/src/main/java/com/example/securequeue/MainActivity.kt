@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.securequeue.databinding.ActivityMainBinding
+import com.example.securequeue.model.Plane
 import com.example.securequeue.model.Truck
 import com.example.securequeue.model.User
 import com.example.securequeue.model.Vehicle
@@ -130,7 +131,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveVehicleToQueue() {
-        getRetryQueue().add(Truck(waterCannon = true))
+        //getRetryQueue().add(Truck(waterCannon = true))
+        getRetryQueue().add(Plane(wingsSpanInMeters = 20))
     }
 
     private fun showQueuedObjects() {

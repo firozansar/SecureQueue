@@ -1,6 +1,7 @@
 package com.example.securequeue
 
 import android.content.Context
+import com.example.securequeue.model.DefaultVehicle
 import com.example.securequeue.model.Plane
 import com.example.securequeue.model.Truck
 import com.example.securequeue.model.Vehicle
@@ -49,7 +50,7 @@ interface FileQueue<T> {
 }
 
 class FileQueueFactory @Inject constructor(private val context: Context) {
-    fun <T> create(fileName: String, type: Class<T>): FileQueue<T> {
+    fun <T : Any> create(fileName: String, type: Class<T>): FileQueue<T> {
         val queueFile = QueueFile.Builder(File(context.filesDir, fileName)).build()
         return TapeFileQueue<T>(ObjectQueue.create<T>(queueFile, MoshiConverter(type)))
     }
@@ -74,11 +75,11 @@ private class TapeFileQueue<T>(private val objectQueue: ObjectQueue<T>) : FileQu
 }
 
 /** Converter which uses Moshi to serialize instances of class T to disk.  */
-private class MoshiConverter<T>(type: Class<T>) : Converter<T> {
+private class MoshiConverter<T : Any>(type: Class<T>) : Converter<T> {
     private val jsonAdapter: JsonAdapter<T>
 
     init {
-        val vehicleFactory = PolymorphicJsonAdapterFactory.of(Vehicle::class.java, "type")
+        val vehicleFactory = PolymorphicJsonAdapterFactory.of(Vehicle::class.java, "Vehicle")
             .withSubtype(Truck::class.java, VehicleType.TRUCK.name)
             .withSubtype(Plane::class.java, VehicleType.PLANE.name)
 
@@ -92,7 +93,7 @@ private class MoshiConverter<T>(type: Class<T>) : Converter<T> {
         return jsonAdapter.fromJson(Buffer().write(bytes))
     }
 
-    override fun toStream(value: T?, os: OutputStream) {
+    override fun toStream(value: T, os: OutputStream) {
         os.sink().buffer().use { sink -> jsonAdapter.toJson(sink, value) }
     }
 }

@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.securequeue.databinding.ActivityMainBinding
+import com.example.securequeue.model.Truck
 import com.example.securequeue.model.User
+import com.example.securequeue.model.Vehicle
 import com.example.securequeue.storage.EncryptedFileSystem
 import com.example.securequeue.storage.EncryptedPrefs
 import com.example.securequeue.storage.EncryptedPrefsInterface
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.Random
 
 class MainActivity : AppCompatActivity() {
@@ -115,19 +115,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addToSecureQueue() {
-        val newUser = generateUser()
-        getRetryQueue().add(newUser)
-        Log.d(TAG, "New user added: $newUser")
+        //saveUserToQueue()
+        saveVehicleToQueue()
     }
 
     private fun showStoredQueue() {
+        showQueuedObjects()
+    }
+
+    private fun saveUserToQueue() {
+        val newUser = generateUser()
+//        getRetryQueue().add(newUser)
+        Log.d(TAG, "New user added: $newUser")
+    }
+
+    private fun saveVehicleToQueue() {
+        getRetryQueue().add(Truck(waterCannon = true))
+    }
+
+    private fun showQueuedObjects() {
         val iterator = getRetryQueue().iterator()
         val sb = StringBuilder()
         while (iterator.hasNext()) {
-            val user = iterator.next()
-            sb.append(user.toString())
+            val element = iterator.next()
+            sb.append(element.toString())
             sb.append("\n")
-            Log.d(TAG, "User in the queue: $user")
+            Log.d(TAG, "Object in the queue: $element")
         }
         binding.fileQueue.text = sb.toString()
     }
@@ -227,11 +240,11 @@ class MainActivity : AppCompatActivity() {
         return User(id, name)
     }
 
-    private fun getRetryQueue(): FileQueue<User> {
+    private fun getRetryQueue(): FileQueue<Vehicle> {
         val fileQueueFactory = FileQueueFactory(baseContext)
         return fileQueueFactory.create(
             SECURE_QUEUE_FILE,
-            User::class.java
+            Vehicle::class.java
         )
     }
 }

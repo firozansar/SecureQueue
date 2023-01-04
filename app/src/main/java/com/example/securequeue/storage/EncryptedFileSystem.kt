@@ -18,16 +18,16 @@ class EncryptedFileSystem(masterKey: String) : EncryptedFileSystemInterface {
     ).build()
 
 
-    override fun savePassword(password: String) {
-        deletePassword()
+    override fun saveString(value: String) {
+        deleteFile()
         encryptedFile.openFileOutput().apply {
-            write(password.toByteArray(StandardCharsets.UTF_8))
+            write(value.toByteArray(StandardCharsets.UTF_8))
             flush()
             close()
         }
     }
 
-    override fun getPassword(): String {
+    override fun getString(): String {
         var password = EMPTY_STRING
         try {
             val bufferReader = encryptedFile.openFileInput().bufferedReader()
@@ -39,26 +39,13 @@ class EncryptedFileSystem(masterKey: String) : EncryptedFileSystemInterface {
         return password
     }
 
-    override fun deletePassword() {
+    override fun deleteFile() {
         val file = File(App.instance.filesDir, FILE_NAME)
         if (file.exists()) file.delete()
     }
 
-    override fun saveUser(user: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getUser(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun deleteUser() {
-        TODO("Not yet implemented")
-    }
-
-
     companion object {
         private const val FILE_NAME = "secret_file.txt"
-        private const val LOG_EXCEPTION_TAG = "Read file exception"
+        private const val LOG_EXCEPTION_TAG = "EncryptedFileSystem"
     }
 }

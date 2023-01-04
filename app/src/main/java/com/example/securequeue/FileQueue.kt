@@ -1,10 +1,15 @@
 package com.example.securequeue
 
 import android.content.Context
+import com.example.securequeue.model.Plane
+import com.example.securequeue.model.Truck
+import com.example.securequeue.model.Vehicle
+import com.example.securequeue.model.VehicleType
 import com.example.securequeue.storage.RunnableConverter
 import com.example.securequeue.storage.toJsonAdapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.tape2.ObjectQueue
 import com.squareup.tape2.ObjectQueue.Converter
@@ -46,8 +51,7 @@ interface FileQueue<T> {
 class FileQueueFactory @Inject constructor(private val context: Context) {
     fun <T> create(fileName: String, type: Class<T>): FileQueue<T> {
         val queueFile = QueueFile.Builder(File(context.filesDir, fileName)).build()
-        val converter = MoshiConverter(type)
-        return TapeFileQueue<T>(ObjectQueue.create<T>(queueFile, converter))
+        return TapeFileQueue<T>(ObjectQueue.create<T>(queueFile, MoshiConverter(type)))
     }
 }
 
@@ -72,11 +76,14 @@ private class TapeFileQueue<T>(private val objectQueue: ObjectQueue<T>) : FileQu
 /** Converter which uses Moshi to serialize instances of class T to disk.  */
 private class MoshiConverter<T>(type: Class<T>) : Converter<T> {
     private val jsonAdapter: JsonAdapter<T>
-    private var converter: RunnableConverter = RunnableConverter()
 
     init {
+        val vehicleFactory = PolymorphicJsonAdapterFactory.of(Vehicle::class.java, "type")
+            .withSubtype(Truck::class.java, VehicleType.TRUCK.name)
+            .withSubtype(Plane::class.java, VehicleType.PLANE.name)
+
         jsonAdapter = Moshi.Builder()
-            .add(Runnable::class.java, converter.toJsonAdapter())
+            .add(vehicleFactory)
             .addLast(KotlinJsonAdapterFactory())
             .build().adapter(type)
     }

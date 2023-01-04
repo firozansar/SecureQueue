@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     private fun savePasswordToEncryptedFile() {
         closeKeyboard()
         if (isInputValid(binding.filesPasswordInput.text.toString())) {
-            encryptedFile.savePassword(binding.filesPasswordInput.text.toString())
+            encryptedFile.saveString(binding.filesPasswordInput.text.toString())
             binding.filesPassword.text = getText(R.string.hidden_password)
             binding.showFilesPassword.text = getText(R.string.show_password)
             binding.filesPasswordInput.text.clear()
@@ -169,11 +169,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getQueueFromEncryptedFile(): String {
-        return encryptedFile.getPassword()
+        return encryptedFile.getString()
     }
 
     private fun getPasswordFromEncryptedFile(): String {
-        return encryptedFile.getPassword()
+        return encryptedFile.getString()
     }
 
     private fun deleteSharedPrefsPassword() {
@@ -189,7 +189,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteFilePassword() {
         if (binding.filesPassword.text.isNotBlank()) {
-            encryptedFile.deletePassword()
+            encryptedFile.deleteFile()
             binding.filesPassword.text = EMPTY_STRING
             binding.showFilesPassword.text = getText(R.string.show_password)
             showToast(getString(R.string.password_deleted))

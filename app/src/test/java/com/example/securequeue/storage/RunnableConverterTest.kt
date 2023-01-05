@@ -1,9 +1,8 @@
 package com.example.securequeue.storage
 
-import com.example.securequeue.model.Dog
+import com.example.securequeue.converter.RunnableConverter
+import com.example.securequeue.converter.toJsonAdapter
 import com.squareup.moshi.Moshi
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
 import org.junit.Test
 
 

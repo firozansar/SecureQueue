@@ -10,20 +10,19 @@ import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
 import com.example.securequeue.databinding.ActivityMainBinding
 import com.example.securequeue.model.Plane
-import com.example.securequeue.model.Truck
 import com.example.securequeue.model.User
 import com.example.securequeue.model.Vehicle
-import com.example.securequeue.storage.EncryptedFileSystem
+import com.example.securequeue.storage.EncryptedFileSystemImpl
+import com.example.securequeue.storage.EncryptedPrefsImpl
 import com.example.securequeue.storage.EncryptedPrefs
-import com.example.securequeue.storage.EncryptedPrefsInterface
 import java.util.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val masterKey: String by lazy { MasterKeys.getOrCreate(AES256_GCM_SPEC) }
-    private val encryptedPrefs: EncryptedPrefsInterface by lazy { EncryptedPrefs(masterKey) }
-    private val encryptedFile: EncryptedFileSystem by lazy { EncryptedFileSystem(masterKey) }
+    private val encryptedPrefsImpl: EncryptedPrefs by lazy { EncryptedPrefsImpl(masterKey) }
+    private val encryptedFile: EncryptedFileSystemImpl by lazy { EncryptedFileSystemImpl(masterKey) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     private fun savePasswordToEncryptedPrefs() {
         closeKeyboard()
         if (isInputValid(binding.sharedPrefsPasswordInput.text.toString())) {
-            encryptedPrefs.savePassword(binding.sharedPrefsPasswordInput.text.toString())
+            encryptedPrefsImpl.savePassword(binding.sharedPrefsPasswordInput.text.toString())
             binding.sharedPrefsPassword.text = getText(R.string.hidden_password)
             binding.showSharedPrefsPassword.text = getText(R.string.show_password)
             binding.sharedPrefsPasswordInput.text.clear()
@@ -180,7 +179,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPasswordFromEncryptedPrefs(): String {
-        return encryptedPrefs.getPassword()
+        return encryptedPrefsImpl.getPassword()
     }
 
     private fun getQueueFromEncryptedFile(): String {
@@ -193,7 +192,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteSharedPrefsPassword() {
         if (binding.sharedPrefsPassword.text.isNotBlank()) {
-            encryptedPrefs.deletePassword()
+            encryptedPrefsImpl.deletePassword()
             binding.sharedPrefsPassword.text = EMPTY_STRING
             binding.showSharedPrefsPassword.text = getText(R.string.show_password)
             showToast(getString(R.string.password_deleted))

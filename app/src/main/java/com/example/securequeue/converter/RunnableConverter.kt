@@ -1,4 +1,4 @@
-package com.example.securequeue.storage
+package com.example.securequeue.converter
 
 import com.example.securequeue.model.Cat
 import com.example.securequeue.model.Dog
